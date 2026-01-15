@@ -1,0 +1,23 @@
+{
+    "name": "linderp/sulu-base",
+    "description": "Helper classes and functions for sulu",
+    "type": "library",
+    "version": "0.1",
+    "require": {
+        "php": "^8.2",
+        "sulu/sulu": "^2.6",
+        "jackalope/jackalope-doctrine-dbal": "^2.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Linderp\\SuluBase\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pascal Linder",
+            "email": "pascal.linder@web-venture.ch"
+        }
+    ]
+}
