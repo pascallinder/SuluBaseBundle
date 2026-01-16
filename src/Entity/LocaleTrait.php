@@ -1,6 +1,6 @@
 <?php
 
-namespace Linderp\SuluBase\Entity;
+namespace Linderp\SuluBaseBundle\Entity;
 trait LocaleTrait
 {
     protected string $locale;

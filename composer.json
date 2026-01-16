@@ -1,17 +1,25 @@
 {
-    "name": "linderp/sulu-base",
+    "name": "linderp/sulu-base-bundle",
     "description": "Helper classes and functions for sulu",
-    "type": "library",
+    "type": "symfony-bundle",
     "version": "0.1",
     "require": {
         "php": "^8.2",
         "sulu/sulu": "^2.6",
+        "symfony/config": "^6.2 | ^7.0",
+        "symfony/dependency-injection": "^6.2 | ^7.0",
+        "symfony/framework-bundle": "^6.2 | ^7.0",
+        "symfony/http-foundation": "^6.2 | ^7.0",
+        "symfony/http-kernel": "^6.2 | ^7.0",
+        "symfony/intl": "^6.2 | ^7.0",
+        "symfony/translation": "^6.2 | ^7.0",
+        "symfony/security-core": "^6.3 | ^7.0",
         "jackalope/jackalope-doctrine-dbal": "^2.0"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Linderp\\SuluBase\\": "src/"
+            "Linderp\\SuluBaseBundle\\": "src/"
         }
     },
     "authors": [
@@ -19,5 +27,11 @@
             "name": "Pascal Linder",
             "email": "pascal.linder@web-venture.ch"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "php-http/discovery": true
+        }
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Linderp\SuluBase\Controller\Admin;
+namespace Linderp\SuluBaseBundle\Controller\Admin;
 use Symfony\Component\HttpFoundation\Request;
 
 trait EnableSwitch

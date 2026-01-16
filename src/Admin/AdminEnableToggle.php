@@ -1,8 +1,8 @@
 <?php
 
-namespace Linderp\SuluBase\Admin;
+namespace Linderp\SuluBaseBundle\Admin;
 
-interface EnableToggleAdmin
+interface AdminEnableToggle
 {
     public function getEnableLabel():string;
     public function getEnableProperty():string;

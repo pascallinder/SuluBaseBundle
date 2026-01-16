@@ -1,6 +1,6 @@
 <?php
 
-namespace Linderp\SuluBase\Entity;
+namespace Linderp\SuluBaseBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

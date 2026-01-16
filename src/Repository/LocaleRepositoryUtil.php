@@ -1,10 +1,10 @@
 <?php
 
-namespace Linderp\SuluBase\Repository;
+namespace Linderp\SuluBaseBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\QueryBuilder;
-use Linderp\SuluBase\Entity\LocaleTrait;
+use Linderp\SuluBaseBundle\Entity\LocaleTrait;
 use Sulu\Component\SmartContent\Orm\DataProviderRepositoryInterface;
 use Sulu\Component\SmartContent\Orm\DataProviderRepositoryTrait;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Linderp\SuluBase\Admin;
+namespace Linderp\SuluBaseBundle\Admin;
 
 use Sulu\Bundle\ActivityBundle\Infrastructure\Sulu\Admin\View\ActivityViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\Admin;
@@ -24,14 +24,14 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
  * Consumers must implement {@see define()} and may override
  * protected hook methods to customize behavior.
  */
-abstract class AdminCrud extends Admin
+abstract class AdminCrud extends Admin implements AdminNavigationItem
 {
     private ?AdminCrudConfig $definition = null;
 
     public function __construct(protected ViewBuilderFactoryInterface $viewBuilderFactory,
                                 protected ActivityViewBuilderFactoryInterface $activityViewBuilderFactory,
                                 protected ReferenceViewBuilderFactoryInterface $referenceViewBuilderFactory,
-                                protected readonly WebspaceManagerInterface $webspaceManager)
+                                protected WebspaceManagerInterface $webspaceManager)
     {
     }
     public static abstract function define(): AdminCrudConfig;
@@ -40,7 +40,7 @@ abstract class AdminCrud extends Admin
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
 
     {
-        if($this instanceof ChildModule) {
+        if($this instanceof AdminChild) {
             return;
         }
         $navigationItemCollection->add(static::getNavigationItem());
@@ -146,7 +146,7 @@ abstract class AdminCrud extends Admin
      */
     protected function supportsEnableToggle(): bool
     {
-        return $this instanceof EnableToggleAdmin;
+        return $this instanceof AdminEnableToggle;
     }
 
     final protected function getDefinition(): AdminCrudConfig
@@ -154,9 +154,9 @@ abstract class AdminCrud extends Admin
         return $this->definition ??= static::define();
     }
 
-    final public static function getNavigationItem():NavigationItem{
+    public static function getNavigationItem():NavigationItem{
         $definition = static::define();
-        $navigationItem = new NavigationItem($definition->list->title);
+        $navigationItem = new NavigationItem($definition->nav->title);
         $navigationItem->setPosition($definition->nav->position);
         $navigationItem->setIcon($definition->nav->icon);
         $navigationItem->setView($definition->list->view);

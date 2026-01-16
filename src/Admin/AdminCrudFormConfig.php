@@ -1,6 +1,6 @@
 <?php
 
-namespace Linderp\SuluBase\Admin;
+namespace Linderp\SuluBaseBundle\Admin;
 
 final readonly class AdminCrudFormConfig
 {

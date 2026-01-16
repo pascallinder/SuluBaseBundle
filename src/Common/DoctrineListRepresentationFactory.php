@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linderp\SuluBase\Common;
+namespace Linderp\SuluBaseBundle\Common;
 
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilder;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactoryInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Linderp\SuluBase\Repository;
+namespace Linderp\SuluBaseBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 

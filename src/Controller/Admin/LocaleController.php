@@ -1,6 +1,6 @@
 <?php
-namespace Linderp\SuluBase\Controller\Admin;
-use Linderp\SuluBase\Repository\LocaleRepositoryUtil;
+namespace Linderp\SuluBaseBundle\Controller\Admin;
+use Linderp\SuluBaseBundle\Repository\LocaleRepositoryUtil;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
