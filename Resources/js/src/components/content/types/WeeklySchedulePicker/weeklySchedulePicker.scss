@@ -1,0 +1,48 @@
+[class*=weekly-schedule-picker] {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: sans-serif;
+
+  [class*=disabled]{
+    opacity: .5;
+  }
+  [class*=day-row] {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+
+
+
+    [class*=day-label] {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 80px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+
+    [class*=time-inputs] {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+
+      input[type="time"] {
+        padding: 4px 6px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+      }
+
+
+      [class*=dash] {
+        font-size: 16px;
+      }
+    }
+  }
+}

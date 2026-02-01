@@ -1,0 +1,40 @@
+[class*=field]:has(>[class*=range-field-container]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+
+  > [class*=range-field-container] {
+    width: 100%;
+    margin: auto;
+
+    [class*=range-container] {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 0.5em 0 1em;
+
+      [class*=input-row] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        align-self: flex-end;
+        [class*=reset-button]{
+          padding: 4px 8px;
+          background-color: #f0f0f0;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+        [class*=slider-input]{
+          padding: 6px 10px;
+          border: 1px solid #ccc;
+          border-radius: 2px;
+          align-self: flex-end;
+        }
+      }
+
+    }
+  }
+
+}

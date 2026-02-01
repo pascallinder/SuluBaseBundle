@@ -1,0 +1,13 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Linderp\SuluBaseBundle\Common\DoctrineListRepresentationFactory:
+    color_picker_custom:
+        class: Linderp\SuluBaseBundle\Content\Types\ColorPickerCustom
+        tags: [ { name: "sulu.content.type", alias: "color_picker_custom" } ]
+    range_picker:
+        class: Linderp\SuluBaseBundle\Content\Types\RangePicker
+        tags: [ { name: "sulu.content.type", alias: "range_picker" } ]

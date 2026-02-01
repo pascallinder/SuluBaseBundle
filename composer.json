@@ -2,7 +2,6 @@
     "name": "linderp/sulu-base-bundle",
     "description": "Helper classes and functions for sulu",
     "type": "symfony-bundle",
-    "version": "0.1",
     "require": {
         "php": "^8.2",
         "sulu/sulu": "^2.6",
@@ -19,7 +18,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Linderp\\SuluBaseBundle\\": "src/"
+            "Linderp\\SuluBaseBundle\\": ""
         }
     },
     "authors": [
