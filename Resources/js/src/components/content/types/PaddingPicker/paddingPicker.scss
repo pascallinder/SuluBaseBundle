@@ -1,0 +1,102 @@
+[class="padding-picker"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+[class="padding-picker"] > [class="padding-apply-all"] {
+  flex: 0 0 auto;
+}
+
+[class="padding-picker"] > [class="padding-grid"] {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+
+  /* ensures the grid takes remaining space next to the icon */
+  flex: 1 1 auto;
+}
+
+/* each cell grows to share the row, but wraps when too small */
+[class="padding-picker"] > [class="padding-grid"] > [class^="cell"] {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px;
+
+  flex: 1 1 90px;
+}
+
+[class="padding-picker"] > [class="padding-grid"] > [class^="cell"] > [class="label"] {
+  width: 14px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+[class="padding-picker"] > [class="padding-grid"] > [class^="cell"] > [class="input"] {
+  width: 100%;
+  min-width: 0; /* important so flex items can actually shrink */
+  padding: 4px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+[class="padding-picker"]
+> [class="padding-grid"]
+> [class^="cell"]
+> [class="input"]:focus {
+  outline: none;
+  border-color: #52a3ff;
+}
+
+/* apply-all button (your FA version kept, just ensure it doesn't force width issues) */
+[class~="padding-picker"] [class~="padding-apply-all"] [class~="apply-all"] {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* default: unlinked */
+[class~="padding-picker"]
+[class~="padding-apply-all"]
+[class~="apply-all"]::after {
+  content: "\f127"; /* fa-link-slash */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+/* active: linked */
+[class~="padding-picker"]
+[class~="padding-apply-all"]
+[class~="apply-all"][class~="active"]::after {
+  content: "\f0c1"; /* fa-link */
+  opacity: 1;
+}
+
+[class~="padding-picker"]
+[class~="padding-apply-all"]
+[class~="apply-all"]:hover {
+  background: rgba(0,0,0,0.05);
+}
+[class="padding-picker"] [class="label"] {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.7;
+  user-select: none;
+}
