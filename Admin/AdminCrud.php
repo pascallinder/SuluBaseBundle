@@ -12,6 +12,7 @@ use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Bundle\ReferenceBundle\Infrastructure\Sulu\Admin\View\ReferenceViewBuilderFactoryInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
+
 /**
  * Base CRUD admin abstraction for Sulu.
  *
@@ -28,19 +29,19 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
 {
     private ?AdminCrudConfig $definition = null;
 
-    public function __construct(protected ViewBuilderFactoryInterface $viewBuilderFactory,
-                                protected ActivityViewBuilderFactoryInterface $activityViewBuilderFactory,
-                                protected ReferenceViewBuilderFactoryInterface $referenceViewBuilderFactory,
-                                protected WebspaceManagerInterface $webspaceManager)
-    {
-    }
-    public static abstract function define(): AdminCrudConfig;
+    public function __construct(
+        protected ViewBuilderFactoryInterface $viewBuilderFactory,
+        protected ActivityViewBuilderFactoryInterface $activityViewBuilderFactory,
+        protected ReferenceViewBuilderFactoryInterface $referenceViewBuilderFactory,
+        protected WebspaceManagerInterface $webspaceManager
+    ) {}
+
+    abstract public static function define(): AdminCrudConfig;
 
 
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
-
     {
-        if($this instanceof AdminChild) {
+        if ($this instanceof AdminChild) {
             return;
         }
         $navigationItemCollection->add(static::getNavigationItem());
@@ -61,7 +62,7 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
             ->addToolbarActions($this->buildListToolbarActions());
         $viewCollection->add($listView);
 
-        $addFormView = $this->viewBuilderFactory->createResourceTabViewBuilder($this->getDefinition()->form->addView, $this->getCollectionRoute() .'/add')
+        $addFormView = $this->viewBuilderFactory->createResourceTabViewBuilder($this->getDefinition()->form->addView, $this->getCollectionRoute() . '/add')
             ->setResourceKey($this->getDefinition()->resourceKey)
             ->setBackView($this->getDefinition()->list->view)
             ->addLocales($locales);
@@ -76,7 +77,7 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
             ->setParent($this->getDefinition()->form->addView);
         $viewCollection->add($addDetailsFormView);
 
-        $editFormView = $this->viewBuilderFactory->createResourceTabViewBuilder($this->getDefinition()->form->editView, $this->getCollectionRoute().'/:id')
+        $editFormView = $this->viewBuilderFactory->createResourceTabViewBuilder($this->getDefinition()->form->editView, $this->getCollectionRoute() . '/:id')
             ->setResourceKey($this->getDefinition()->resourceKey)
             ->setBackView($this->getDefinition()->list->view)
             ->setTitleProperty($this->getDefinition()->form->titleProperty)
@@ -92,32 +93,50 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
         $viewCollection->add($editDetailsFormView);
     }
     /**
-     * @return string[]
+     * Returns list adapter types for the list view.
+     *
+     * Override to add custom adapters (e.g., ['table', 'column_list']).
+     *
+     * @return list<string>
      */
     protected function getListAdapters(): array
     {
         return ['table'];
     }
+
     /**
-     * @return ToolbarAction[]
+     * Builds toolbar actions for the list view.
+     *
+     * Default: Add and Delete actions.
+     *
+     * @return list<ToolbarAction>
      */
     protected function buildListToolbarActions(): array
     {
         return [
             new ToolbarAction('sulu_admin.add'),
-            new ToolbarAction('sulu_admin.delete')
+            new ToolbarAction('sulu_admin.delete'),
         ];
-
     }
+
     /**
-     * @return ToolbarAction[]
+     * Builds toolbar actions for the add form view.
+     *
+     * Default: Save action only.
+     *
+     * @return list<ToolbarAction>
      */
     protected function buildAddToolbarActions(): array
     {
         return [new ToolbarAction('sulu_admin.save')];
     }
+
     /**
-     * @return ToolbarAction[]
+     * Builds toolbar actions for the edit form view.
+     *
+     * Default: Save and Delete actions, plus optional Enable/Disable toggle.
+     *
+     * @return list<ToolbarAction>
      */
     protected function buildEditToolbarActions(): array
     {
@@ -125,6 +144,7 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
             new ToolbarAction('sulu_admin.save'),
             new ToolbarAction('sulu_admin.delete'),
         ];
+
         if ($this->supportsEnableToggle()) {
             $toolbarActions[] = new TogglerToolbarAction(
                 $this->getEnableLabel(),
@@ -133,6 +153,7 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
                 'disable',
             );
         }
+
         return $toolbarActions;
     }
     protected function getCollectionRoute(): string
@@ -154,12 +175,19 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
         return $this->definition ??= static::define();
     }
 
-    public static function getNavigationItem():NavigationItem{
+    /**
+     * Creates a navigation item for this admin class.
+     *
+     * Called by {@see configureNavigationItems()} unless the class implements AdminChild.
+     */
+    public static function getNavigationItem(): NavigationItem
+    {
         $definition = static::define();
         $navigationItem = new NavigationItem($definition->nav->title);
         $navigationItem->setPosition($definition->nav->position);
         $navigationItem->setIcon($definition->nav->icon);
         $navigationItem->setView($definition->list->view);
+
         return $navigationItem;
     }
 }

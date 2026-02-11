@@ -1,5 +1,9 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Linderp\SuluBaseBundle\Controller\Admin;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -7,52 +11,93 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @template T
+ * Generic REST controller template for Sulu admin CRUD operations.
  *
+ * Provides standardized request handling for GET/POST/PUT/DELETE operations.
+ * Subclasses implement entity-specific serialization, persistence, and business logic.
+ *
+ * @template T of object
  */
 abstract class BaseController extends AbstractController
 {
     /**
-     *  @param T $entity
+     * Serializes an entity to an array for API response.
+     *
+     * @param T $entity
+     * @return array<string, mixed>
      */
-    protected abstract function getDataForEntity($entity, Request $request): array;
-    /**
-     *  @param T $entity
-     */
-    protected abstract function mapDataToEntity(array $data, $entity, Request $request): void;
+    abstract protected function getDataForEntity($entity, Request $request): array;
 
-    protected abstract function load(int $id, Request $request);
     /**
+     * Maps request data to entity properties.
+     *
+     * @param array<string, mixed> $data
+     * @param T $entity
+     */
+    abstract protected function mapDataToEntity(array $data, $entity, Request $request): void;
+
+    /**
+     * Loads an entity by ID or returns null if not found.
+     *
+     * @return T|null
+     */
+    abstract protected function load(int $id, Request $request);
+
+    /**
+     * Creates a new entity instance.
+     *
+     * May return void if the subclass doesn't support entity creation via POST.
+     *
      * @return T
      */
-    protected abstract function create(Request $request);
+    abstract protected function create(Request $request);
 
     /**
-     *  @param T $entity
+     * Persists an entity to the database.
+     *
+     * @param T $entity
      */
-    protected abstract function save($entity): void;
-
-    protected abstract function remove(int $id): void;
+    abstract protected function save($entity): void;
 
     /**
-     *  @param T $entity
+     * Removes an entity from the database.
      */
-    protected abstract function triggerSwitch(Request $request,string $action, $entity);
+    abstract protected function remove(int $id): void;
 
+    /**
+     * Handles enable/disable toggle switch actions.
+     *
+     * @param T $entity
+     */
+    abstract protected function triggerSwitch(Request $request, string $action, $entity);
+
+    /**
+     * Handles GET request for a single entity.
+     *
+     * @throws NotFoundHttpException if entity not found
+     */
     protected function handleGetByIdRequest(int $id, Request $request): JsonResponse
     {
         $entity = $this->load($id, $request);
         if ($entity === null) {
             throw new NotFoundHttpException();
         }
+
         return $this->respondWithEntity($entity, $request);
     }
+
+    /**
+     * Handles PUT request to update an existing entity.
+     *
+     * @throws NotFoundHttpException if entity not found
+     */
     protected function handlePutRequest(int $id, Request $request): JsonResponse
     {
         $entity = $this->load($id, $request);
         if ($entity === null) {
             throw new NotFoundHttpException();
         }
+
         $data = $request->toArray();
         $this->mapDataToEntity($data, $entity, $request);
         $this->save($entity);
@@ -60,38 +105,60 @@ abstract class BaseController extends AbstractController
         return $this->respondWithEntity($entity, $request);
     }
 
+    /**
+     * Handles POST request to create a new entity.
+     */
     protected function handlePostRequest(Request $request): JsonResponse
     {
-        $event = $this->create($request);
+        $entity = $this->create($request);
 
         $data = $request->toArray();
-        $this->mapDataToEntity($data, $event, $request);
-        $this->save($event);
+        $this->mapDataToEntity($data, $entity, $request);
+        $this->save($entity);
 
-        return $this->respondWithEntity($event, $request);
+        return $this->respondWithEntity($entity, $request);
     }
 
-    protected function handlePostTriggerRequest(int $id,Request $request): JsonResponse
+    /**
+     * Handles POST trigger request for enable/disable toggle.
+     *
+     * @throws NotFoundHttpException if entity not found
+     */
+    protected function handlePostTriggerRequest(int $id, Request $request): JsonResponse
     {
         $entity = $this->load($id, $request);
         if ($entity === null) {
             throw new NotFoundHttpException();
         }
+
+        $action = $request->query->getString('action');
         try {
-            $this->triggerSwitch($request,$request->query->get('action'),$entity);
-        }catch (\Throwable $throwable){
-            return $this->json(['error'=> $throwable->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            $this->triggerSwitch($request, $action, $entity);
+        } catch (\Throwable $throwable) {
+            return $this->json(['error' => $throwable->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $this->save($entity);
+
         return $this->respondWithEntity($entity, $request);
     }
+
+    /**
+     * Handles DELETE request to remove an entity.
+     */
     protected function handleDeleteRequest(int $id): JsonResponse
     {
         $this->remove($id);
-        return $this->json(null, 204);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
-    protected function respondWithEntity(object $entity, Request $request, int $status = 200): JsonResponse
+
+    /**
+     * Creates a JSON response with the serialized entity data.
+     *
+     * @param T $entity
+     */
+    protected function respondWithEntity(object $entity, Request $request, int $status = Response::HTTP_OK): JsonResponse
     {
         return $this->json($this->getDataForEntity($entity, $request), $status);
     }

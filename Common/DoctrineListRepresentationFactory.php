@@ -13,21 +13,35 @@ use Sulu\Component\Rest\ListBuilder\PaginatedRepresentation;
 use Sulu\Component\Rest\RestHelperInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * Factory for creating Doctrine-based list representations.
+ *
+ * Wraps Sulu's list builder infrastructure to provide paginated, sortable,
+ * and filterable lists for admin interfaces.
+ *
+ * Handles:
+ * - Field descriptor lookup from metadata
+ * - Request parameter extraction (pagination, sorting, filtering)
+ * - Invalid sort field validation
+ * - Custom ID ordering for specific list requests
+ */
 readonly class DoctrineListRepresentationFactory
 {
     public function __construct(
-        private RestHelperInterface                 $restHelper,
-        private ListRestHelperInterface             $listRestHelper,
+        private RestHelperInterface $restHelper,
+        private ListRestHelperInterface $listRestHelper,
         private DoctrineListBuilderFactoryInterface $listBuilderFactory,
-        private FieldDescriptorFactoryInterface     $fieldDescriptorFactory,
-        private RequestStack                        $requestStack
-    ) {
-    }
+        private FieldDescriptorFactoryInterface $fieldDescriptorFactory,
+        private RequestStack $requestStack
+    ) {}
 
     /**
-     * @param array<string, string> $filters
-     * @param array<string, string|int|null> $parameters
-     * @param string[] $includedFields
+     * Creates a paginated list representation.
+     *
+     * @param string $resourceKey Resource identifier for metadata lookup
+     * @param array<string, string> $filters Field filters to apply
+     * @param array<string, string|int|null> $parameters Query parameters for the list builder
+     * @param list<string> $includedFields Additional fields to include in the response
      */
     public function createDoctrineListRepresentation(
         string $resourceKey,
@@ -35,14 +49,21 @@ readonly class DoctrineListRepresentationFactory
         array $parameters = [],
         array $includedFields = [],
     ): PaginatedRepresentation {
-        /** @var DoctrineFieldDescriptor[] $fieldDescriptors */
+        /** @var array<string, DoctrineFieldDescriptor> $fieldDescriptors */
         $fieldDescriptors = $this->fieldDescriptorFactory->getFieldDescriptors($resourceKey);
+
         /** @var DoctrineListBuilder $listBuilder */
         $listBuilder = $this->listBuilderFactory->create($fieldDescriptors['id']->getEntityName());
-        $sortBy = $this->requestStack->getCurrentRequest()->get('sortBy');
-        if($sortBy !== null && !array_key_exists($sortBy,$fieldDescriptors)){
-            $this->requestStack->getCurrentRequest()->attributes->set('sortBy',null);
+
+        // Validate sortBy parameter to prevent errors on invalid field names
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        if ($currentRequest !== null) {
+            $sortBy = $currentRequest->get('sortBy');
+            if ($sortBy !== null && !array_key_exists($sortBy, $fieldDescriptors)) {
+                $currentRequest->attributes->set('sortBy', null);
+            }
         }
+
         $this->restHelper->initializeListBuilder($listBuilder, $fieldDescriptors);
 
         foreach ($parameters as $key => $value) {
@@ -58,12 +79,12 @@ readonly class DoctrineListRepresentationFactory
         }
 
         $items = $listBuilder->execute();
-        // sort the items to reflect the order of the given ids if the list was requested to include specific ids
-        $requestedIds = $this->listRestHelper->getIds();
-        if (null !== $requestedIds) {
-            $idPositions = \array_flip($requestedIds);
 
-            \usort($items, fn ($a, $b) => $idPositions[$a['id']] - $idPositions[$b['id']]);
+        // Sort items by requested ID order if specific IDs were requested
+        $requestedIds = $this->listRestHelper->getIds();
+        if ($requestedIds !== null) {
+            $idPositions = array_flip($requestedIds);
+            usort($items, static fn(array $a, array $b): int => $idPositions[$a['id']] - $idPositions[$b['id']]);
         }
 
         return new PaginatedRepresentation(

@@ -65,20 +65,3 @@
     font-size: 0.8em;
   }
 }
-
-[class*=color-picker-radiogroup][class*=is-disabled] {
-  opacity: 0.4 !important;
-
-  label {
-    cursor: not-allowed;
-    pointer-events: none;
-    transition: none !important;
-    transform: none !important;
-  }
-
-  label:hover {
-    transform: none !important;
-    z-index: auto !important;
-  }
-
-}

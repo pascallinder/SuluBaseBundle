@@ -1,10 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Linderp\SuluBaseBundle\Controller\Admin;
+
 use Linderp\SuluBaseBundle\Repository\LocaleRepositoryUtil;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @template T
+ * Base controller for locale-aware entities.
+ *
+ * Provides implementations of {@see BaseController} abstract methods
+ * using {@see LocaleRepositoryUtil}. Automatically extracts locale from
+ * the request query parameter.
+ *
+ * @template T of object
  * @extends BaseController<T>
  */
 abstract class LocaleController extends BaseController
@@ -12,9 +22,9 @@ abstract class LocaleController extends BaseController
     /**
      * @param LocaleRepositoryUtil<T> $localeRepositoryUtil
      */
-    public function __construct(private readonly LocaleRepositoryUtil $localeRepositoryUtil){
-
-    }
+    public function __construct(
+        private readonly LocaleRepositoryUtil $localeRepositoryUtil
+    ) {}
 
     /**
      * @return T|null
@@ -23,6 +33,7 @@ abstract class LocaleController extends BaseController
     {
         return $this->localeRepositoryUtil->findById($id, $this->getLocale($request));
     }
+
     /**
      * @return T
      */
@@ -46,8 +57,13 @@ abstract class LocaleController extends BaseController
         $this->localeRepositoryUtil->flush();
     }
 
-    public function getLocale(Request $request): string
+    /**
+     * Extracts locale from request query parameter.
+     *
+     * Defaults to 'en' if not present.
+     */
+    protected function getLocale(Request $request): string
     {
-        return (string) $request->query->get('locale', 'en');
+        return $request->query->getString('locale', 'en');
     }
 }

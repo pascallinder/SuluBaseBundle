@@ -16,6 +16,9 @@ class ColorPickerCustom extends React.PureComponent {
     }
 
     handleChange(value) {
+        if (this.props.disabled) {
+            return;
+        }
         this.props.onChange(value);
         this.props.onFinish();
     }
@@ -38,9 +41,13 @@ class ColorPickerCustom extends React.PureComponent {
     }
 
     render() {
-        const { value: value } = this.props;
+        const { value: value, disabled } = this.props;
         return (
-            <RadioGroup value={value} onChange={this.handleChange} className="color-picker-radiogroup">
+            <RadioGroup
+                value={value}
+                onChange={this.handleChange}
+                className={`color-picker-radiogroup${disabled ? ' is-disabled' : ''}`}
+            >
                 {this.colorlist.map((color, index) => (
                     <Radio value={color} key={index} />
                 ))}

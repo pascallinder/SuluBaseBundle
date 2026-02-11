@@ -54,6 +54,9 @@ class RangePicker extends React.PureComponent {
     }
 
     handleChange(value) {
+        if (this.props.disabled) {
+            return;
+        }
         value = parseFloat(value);
         this.props.onChange(value);
         this.props.onFinish();
@@ -64,10 +67,14 @@ class RangePicker extends React.PureComponent {
         const max = this.getMax();
         const step = this.getStep();
         const defaultValue = this.getDefaultValue();
+        const { disabled } = this.props;
         const value = this.props.value !== undefined ? parseFloat(this.props.value) : defaultValue;
+        const trackColors = disabled ? ["#d8d8d8", "#ececec"] : ["#9676BB", "#ccc"];
+        const thumbInnerColor = disabled ? "#dcdcdc" : "#CCC";
+        const thumbShadow = disabled ? "none" : "0px 2px 6px #AAA";
 
         return (
-            <div className="range-container">
+            <div className={`range-container${disabled ? ' is-disabled' : ''}`}>
                 <Range
                     values={[value]}
                     step={step}
@@ -76,8 +83,8 @@ class RangePicker extends React.PureComponent {
                     onChange={(values) => this.handleChange(values[0])}
                     renderTrack={({ props, children }) => (
                         <div
-                            onMouseDown={props.onMouseDown}
-                            onTouchStart={props.onTouchStart}
+                            onMouseDown={disabled ? undefined : props.onMouseDown}
+                            onTouchStart={disabled ? undefined : props.onTouchStart}
                             style={{
                                 ...props.style,
                                 height: "36px",
@@ -93,7 +100,7 @@ class RangePicker extends React.PureComponent {
                                     borderRadius: "4px",
                                     background: getTrackBackground({
                                         values: [value],
-                                        colors: ["#9676BB", "#ccc"],
+                                        colors: trackColors,
                                         min: min,
                                         max: max,
                                     }),
@@ -116,7 +123,7 @@ class RangePicker extends React.PureComponent {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                boxShadow: "0px 2px 6px #AAA",
+                                boxShadow: thumbShadow,
                             }}
                         >
                             <div
@@ -124,7 +131,7 @@ class RangePicker extends React.PureComponent {
                                     height: "100%",
                                     width: "100%",
                                     borderRadius: "50px",
-                                    backgroundColor: isDragged ? "#548BF4" : "#CCC",
+                                    backgroundColor: disabled ? thumbInnerColor : (isDragged ? "#548BF4" : "#CCC"),
                                 }}
                             />
                         </div>
@@ -139,11 +146,13 @@ class RangePicker extends React.PureComponent {
                         max={max}
                         step={step}
                         onChange={(e) => this.handleChange(e.target.value)}
+                        disabled={disabled}
                     />
                     <button
                         type="button"
                         className="reset-button"
                         onClick={() => this.handleChange(defaultValue)}
+                        disabled={disabled}
                     >
                         Default
                     </button>
