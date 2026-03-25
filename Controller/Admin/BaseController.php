@@ -112,6 +112,10 @@ abstract class BaseController extends AbstractController
     {
         $entity = $this->create($request);
 
+        if ($entity === null) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        }
+
         $data = $request->toArray();
         $this->mapDataToEntity($data, $entity, $request);
         $this->save($entity);
