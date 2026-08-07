@@ -1,5 +1,6 @@
 import React from 'react';
 import './paddingPicker.scss';
+
 const defaultPaddingY = 10;
 const defaultPaddingX = 25;
 function normalizePadding(value) {

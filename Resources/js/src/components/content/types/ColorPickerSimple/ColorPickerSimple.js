@@ -1,5 +1,5 @@
 import React from 'react';
-import { RadioGroup, Radio } from 'sulu-admin-bundle/components/Radio';
+import {Radio, RadioGroup} from 'sulu-admin-bundle/components/Radio';
 import '../ColorPickerCustom/colorPickerCustom.scss';
 
 class ColorPickerSimple extends React.PureComponent {

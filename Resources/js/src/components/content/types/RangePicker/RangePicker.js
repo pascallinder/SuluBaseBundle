@@ -1,5 +1,5 @@
 import React from "react";
-import { Range, getTrackBackground } from "react-range";
+import {getTrackBackground, Range} from "react-range";
 import './rangePicker.scss';
 
 const STEP = 0.01;

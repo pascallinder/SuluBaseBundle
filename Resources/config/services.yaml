@@ -5,12 +5,5 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     Linderp\SuluBaseBundle\Common\DoctrineListRepresentationFactory:
-    color_picker_simple:
-        class: Linderp\SuluBaseBundle\Content\Types\ColorPickerSimple
-        tags: [ { name: "sulu.content.type", alias: "color_picker_simple" } ]
-    color_picker_custom:
-        class: Linderp\SuluBaseBundle\Content\Types\ColorPickerCustom
-        tags: [ { name: "sulu.content.type", alias: "color_picker_custom" } ]
-    range_picker:
-        class: Linderp\SuluBaseBundle\Content\Types\RangePicker
-        tags: [ { name: "sulu.content.type", alias: "range_picker" } ]
+    Linderp\SuluBaseBundle\Content\Types\ThemeColorPropertyResolver:
+        tags: [ 'sulu_content.property_resolver' ]
