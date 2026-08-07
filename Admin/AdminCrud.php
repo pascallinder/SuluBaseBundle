@@ -145,7 +145,7 @@ abstract class AdminCrud extends Admin implements AdminNavigationItem
             new ToolbarAction('sulu_admin.delete'),
         ];
 
-        if ($this->supportsEnableToggle()) {
+        if ($this instanceof AdminEnableToggle && $this->supportsEnableToggle()) {
             $toolbarActions[] = new TogglerToolbarAction(
                 $this->getEnableLabel(),
                 $this->getEnableProperty(),

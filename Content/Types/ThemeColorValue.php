@@ -9,8 +9,7 @@ final class ThemeColorValue implements \JsonSerializable
     public function __construct(
         private string $light = 'inherit',
         private ?string $dark = null
-    ) {
-    }
+    ) {}
 
     public function getLight(): string
     {
