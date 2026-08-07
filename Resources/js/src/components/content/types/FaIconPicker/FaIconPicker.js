@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from 'sulu-admin-bundle/components/Button';
 import Overlay from 'sulu-admin-bundle/components/Overlay';
 import Input from 'sulu-admin-bundle/components/Input';
 import Icon from 'sulu-admin-bundle/components/Icon';

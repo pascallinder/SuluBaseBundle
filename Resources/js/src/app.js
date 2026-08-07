@@ -1,4 +1,4 @@
-import { fieldRegistry } from 'sulu-admin-bundle/containers'
+import {fieldRegistry} from 'sulu-admin-bundle/containers'
 import ColorPickerCustom from './components/content/types/ColorPickerCustom';
 import ColorPickerSimple from './components/content/types/ColorPickerSimple';
 import RangePicker from "./components/content/types/RangePicker";

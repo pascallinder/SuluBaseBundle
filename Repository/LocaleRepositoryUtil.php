@@ -8,26 +8,19 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Linderp\SuluBaseBundle\Entity\LocaleTrait;
-use Sulu\Component\SmartContent\Orm\DataProviderRepositoryInterface;
-use Sulu\Component\SmartContent\Orm\DataProviderRepositoryTrait;
 
 /**
  * Repository utility for locale-aware entities.
  *
- * Extends ServiceEntityRepository with locale-specific query methods and
- * implements Sulu's DataProviderRepositoryInterface for smart content integration.
+ * Extends ServiceEntityRepository with locale-specific query methods.
  *
  * Requires entities to use {@see LocaleTrait}.
  *
  * @template T of object
  * @extends ServiceEntityRepository<T>
  */
-abstract class LocaleRepositoryUtil extends ServiceEntityRepository implements DataProviderRepositoryInterface
+abstract class LocaleRepositoryUtil extends ServiceEntityRepository
 {
-    use DataProviderRepositoryTrait {
-        DataProviderRepositoryTrait::findByFilters as parentFindByFilters;
-    }
-
     /**
      * Creates a new entity instance with the specified locale.
      *
@@ -98,29 +91,6 @@ abstract class LocaleRepositoryUtil extends ServiceEntityRepository implements D
         }
 
         return $objects;
-    }
-
-    /**
-     * Finds entities by filters and sets their locale.
-     *
-     * Wraps {@see DataProviderRepositoryTrait::findByFilters()}.
-     *
-     * @param array<string, mixed> $filters
-     * @param array<string, mixed> $options
-     * @return list<T>
-     */
-    public function findByFilters($filters, $page, $pageSize, $limit, $locale, $options = []): array
-    {
-        $entities = $this->parentFindByFilters($filters, $page, $pageSize, $limit, $locale, $options);
-
-        return array_map(
-            static function ($entity) use ($locale) {
-                $entity->setLocale($locale);
-
-                return $entity;
-            },
-            $entities
-        );
     }
 
     /**

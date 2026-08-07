@@ -1,5 +1,6 @@
 // faIconsSolid.js
 import '@fortawesome/fontawesome-free/js/solid';
+
 export function getFaSolidIconNames() {
     if (typeof window === 'undefined') {
         return [];
