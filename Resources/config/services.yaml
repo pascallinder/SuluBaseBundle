@@ -7,3 +7,4 @@ services:
     Linderp\SuluBaseBundle\Common\DoctrineListRepresentationFactory:
     Linderp\SuluBaseBundle\Content\Types\ThemeColorPropertyResolver:
         tags: [ 'sulu_content.property_resolver' ]
+    Linderp\SuluBaseBundle\Twig\ThemeColorExtension:

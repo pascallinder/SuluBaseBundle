@@ -8,7 +8,24 @@ Shared Sulu CMS utilities for admin CRUD scaffolding, locale-aware repositories/
 - **Locale-aware stack**: `Entity/LocaleTrait.php`, `Repository/LocaleRepositoryUtil.php`, and `Controller/Admin/LocaleController.php`.
 - **List builder helper**: `Common/DoctrineListRepresentationFactory.php` for paginated list responses.
 - **Content types**: `Content/Types/*` registered in `Resources/config/services.yaml`.
+- **Theme-aware Twig colors**: `theme_color(value, inheritFallback)` renders the two-color picker value as CSS `light-dark()`.
 - **Admin React fields**: `Resources/js/src/components/content/types/*` registered in `Resources/js/src/app.js`.
+
+## Render Theme Colors in Twig
+
+Use the `theme_color` function for values from `color_picker_custom`. The browser picks the matching value from the document's `color-scheme`:
+
+```twig
+<section style="background-color: {{ theme_color(content.bgColor) }}">
+    <h2 style="color: {{ theme_color(content.textColor) }}">{{ content.title }}</h2>
+</section>
+```
+
+`inherit` is represented as `currentColor` by default, which is valid inside CSS `light-dark()` for text, borders, fills, strokes, and shadows. Pass a property-specific replacement as the optional second argument for backgrounds and other properties:
+
+```twig
+<div style="background-color: {{ theme_color(content.underlayColor, 'transparent') }}"></div>
+```
 
 ## Quick Start: Add a New Admin CRUD
 1. **Admin class** (extend `AdminCrud`):
