@@ -1,6 +1,7 @@
 import React from "react";
 import "./weeklySchedulePicker.scss";
 import {action} from "mobx";
+import {translate} from "sulu-admin-bundle/utils";
 
 
 class WeeklySchedulePicker extends React.PureComponent {
@@ -42,6 +43,19 @@ class WeeklySchedulePicker extends React.PureComponent {
     });
 
 
+    handleToggleOpenAllDay = action((day) => {
+        const { value, onChange } = this.props;
+        const updated = { ...value };
+
+
+        updated[day] = this.isOpenAllDay(updated[day]) ? ["08:00", "16:00"] : ["00:00", "24:00"];
+        onChange(updated);
+    });
+
+
+    isOpenAllDay = (range) => range?.[0] === "00:00" && range?.[1] === "24:00";
+
+
     render() {
         const { value = {} } = this.props;
 
@@ -51,6 +65,7 @@ class WeeklySchedulePicker extends React.PureComponent {
                 {this.days.map((day) => {
                     const range = value[day];
                     const enabled = Boolean(range);
+                    const openAllDay = this.isOpenAllDay(range);
 
 
                     return (
@@ -66,18 +81,32 @@ class WeeklySchedulePicker extends React.PureComponent {
 
 
                             {enabled && (
-                                <div className="time-inputs">
-                                    <input
-                                        type="time"
-                                        value={range?.[0] ?? ""}
-                                        onChange={(e) => this.handleTimeChange(day, 0, e.target.value)}
-                                    />
-                                    <span className="dash">–</span>
-                                    <input
-                                        type="time"
-                                        value={range?.[1] ?? ""}
-                                        onChange={(e) => this.handleTimeChange(day, 1, e.target.value)}
-                                    />
+                                <div className="day-controls">
+                                    <label className="all-hours-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={openAllDay}
+                                            onChange={() => this.handleToggleOpenAllDay(day)}
+                                        />
+                                        <span>{translate("sulu_base.weekly_schedule.open_24_hours")}</span>
+                                    </label>
+
+
+                                    {!openAllDay && (
+                                        <div className="time-inputs">
+                                            <input
+                                                type="time"
+                                                value={range?.[0] ?? ""}
+                                                onChange={(e) => this.handleTimeChange(day, 0, e.target.value)}
+                                            />
+                                            <span className="dash">–</span>
+                                            <input
+                                                type="time"
+                                                value={range?.[1] ?? ""}
+                                                onChange={(e) => this.handleTimeChange(day, 1, e.target.value)}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

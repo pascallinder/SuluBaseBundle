@@ -27,6 +27,21 @@
     }
 
 
+    [class*=day-controls] {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+
+    [class*=all-hours-label] {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+
     [class*=time-inputs] {
       display: flex;
       align-items: center;
