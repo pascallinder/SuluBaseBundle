@@ -8,3 +8,8 @@ services:
     Linderp\SuluBaseBundle\Content\Types\ThemeColorPropertyResolver:
         tags: [ 'sulu_content.property_resolver' ]
     Linderp\SuluBaseBundle\Twig\ThemeColorExtension:
+    Linderp\SuluBaseBundle\Admin\Metadata\GeneratedLinkPropertyMetadataMapper:
+        arguments:
+            $textPropertyMetadataMapper: '@sulu_admin.property_metadata_mapper.text'
+        tags:
+            - { name: 'sulu_admin.property_metadata_mapper', type: 'generated_link' }
