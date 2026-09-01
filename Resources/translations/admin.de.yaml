@@ -1,3 +1,10 @@
 sulu_base:
+  map_picker:
+    longitude: Längengrad
+    latitude: Breitengrad
+    none: Kein Standort ausgewählt
+    select: Standort wählen
+    title: Standort auswählen
+    hint: Klicke auf die Karte oder ziehe den Marker, um den Standort festzulegen.
   weekly_schedule:
     open_24_hours: 24 Stunden geöffnet

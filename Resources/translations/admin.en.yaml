@@ -1,3 +1,10 @@
 sulu_base:
+  map_picker:
+    longitude: Longitude
+    latitude: Latitude
+    none: No location selected
+    select: Choose location
+    title: Select location
+    hint: Click the map or drag the marker to set the location.
   weekly_schedule:
     open_24_hours: Open 24 hours
