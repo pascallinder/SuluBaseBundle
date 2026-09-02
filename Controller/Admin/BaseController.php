@@ -136,11 +136,7 @@ abstract class BaseController extends AbstractController
         }
 
         $action = $request->query->getString('action');
-        try {
-            $this->triggerSwitch($request, $action, $entity);
-        } catch (\Throwable $throwable) {
-            return $this->json(['error' => $throwable->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        $this->triggerSwitch($request, $action, $entity);
 
         $this->save($entity);
 

@@ -63,6 +63,7 @@ final class ThemeColorValue implements \JsonSerializable
         return $this->light;
     }
 
+    /** @return array{light: string, dark: string} */
     public function jsonSerialize(): array
     {
         return [

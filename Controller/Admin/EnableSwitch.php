@@ -21,7 +21,7 @@ trait EnableSwitch
      *
      * @param T $entity Entity with setEnabled(bool) method
      */
-    protected function triggerSwitch(Request $request, string $action, $entity)
+    protected function triggerSwitch(Request $request, string $action, $entity): void
     {
         $enabled = match ($action) {
             'enable' => true,

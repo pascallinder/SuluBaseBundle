@@ -98,7 +98,7 @@ abstract class LocaleRepositoryUtil extends ServiceEntityRepository
      *
      * Override to add custom joins for filtering/sorting.
      */
-    protected function appendJoins(QueryBuilder $queryBuilder, $alias, $locale): void
+    protected function appendJoins(QueryBuilder $queryBuilder, string $alias, string $locale): void
     {
         $this->appendSortByJoins($queryBuilder, $alias, $locale);
     }

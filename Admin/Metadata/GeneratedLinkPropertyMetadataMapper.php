@@ -11,9 +11,7 @@ use Sulu\Bundle\AdminBundle\Metadata\SchemaMetadata\PropertyMetadataMapperInterf
 
 final readonly class GeneratedLinkPropertyMetadataMapper implements PropertyMetadataMapperInterface
 {
-    public function __construct(private TextPropertyMetadataMapper $textPropertyMetadataMapper)
-    {
-    }
+    public function __construct(private TextPropertyMetadataMapper $textPropertyMetadataMapper) {}
 
     public function mapPropertyMetadata(FieldMetadata $fieldMetadata): PropertyMetadata
     {
