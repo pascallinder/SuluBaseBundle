@@ -46,9 +46,9 @@ abstract class BaseController extends AbstractController
     /**
      * Creates a new entity instance.
      *
-     * May return void if the subclass doesn't support entity creation via POST.
+     * May return null if the subclass doesn't support entity creation via POST.
      *
-     * @return T
+     * @return T|null
      */
     abstract protected function create(Request $request);
 
@@ -69,7 +69,7 @@ abstract class BaseController extends AbstractController
      *
      * @param T $entity
      */
-    abstract protected function triggerSwitch(Request $request, string $action, $entity);
+    abstract protected function triggerSwitch(Request $request, string $action, $entity): void;
 
     /**
      * Handles GET request for a single entity.
