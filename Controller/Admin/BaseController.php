@@ -113,7 +113,9 @@ abstract class BaseController extends AbstractController
         $entity = $this->create($request);
 
         if ($entity === null) {
-            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+            return new JsonResponse([
+                'detail' => 'The resource could not be created.',
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $data = $request->toArray();
