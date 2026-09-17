@@ -5,6 +5,10 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     Linderp\SuluBaseBundle\Common\DoctrineListRepresentationFactory:
+    Linderp\SuluBaseBundle\Subscriber\EntityStringTrimSubscriber:
+        tags:
+            - { name: 'doctrine.event_listener', event: 'prePersist' }
+            - { name: 'doctrine.event_listener', event: 'preUpdate' }
     Linderp\SuluBaseBundle\Content\Types\ThemeColorPropertyResolver:
         tags: [ 'sulu_content.property_resolver' ]
     Linderp\SuluBaseBundle\Twig\ThemeColorExtension:
