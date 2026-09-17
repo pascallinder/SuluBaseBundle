@@ -9,6 +9,7 @@ Shared Sulu CMS utilities for admin CRUD scaffolding, locale-aware repositories/
 - **List builder helper**: `Common/DoctrineListRepresentationFactory.php` for paginated list responses.
 - **Doctrine resource loader**: `Content/AbstractEntityResourceLoader.php` centralizes enabled-entity loading, locale setup, and configured property mapping for Sulu smart content.
 - **Content types**: `Content/Types/*` registered in `Resources/config/services.yaml`.
+- **String trimming**: `Subscriber/EntityStringTrimSubscriber.php` trims leading and trailing whitespace from mapped string fields before persistence.
 - **Theme-aware Twig colors**: `theme_color(value, inheritFallback)` renders the two-color picker value as CSS `light-dark()`.
 - **Admin React fields**: `Resources/js/src/components/content/types/*`, including the `map_picker` field, the read-only `generated_link` property, and the `sulu_base.snackbar` toolbar action registered in `Resources/js/src/app.js`.
 
