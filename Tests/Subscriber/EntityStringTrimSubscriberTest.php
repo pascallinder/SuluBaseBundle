@@ -7,7 +7,7 @@ namespace Linderp\SuluBaseBundle\Tests\Subscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Linderp\SuluBaseBundle\Subscriber\EntityStringTrimSubscriber;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
